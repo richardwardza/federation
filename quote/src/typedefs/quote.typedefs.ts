@@ -7,6 +7,7 @@ export const quoteTypeDefs = gql`
     IMAGE
   }
 
+  # Extend the Policy type and add the Quote to it via the quoteId field
   extend type Policy @key(fields: "quoteId") {
     quoteId: Int! @external
     quote: Quote

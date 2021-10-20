@@ -8,6 +8,11 @@ export const productTypeDefs = gql`
 # by "The following code goes as a part of the tweet service:"
 
 
+  extend type Quote @key(fields: "id") {
+    id: Int! @external
+    policy: Policy
+  }
+
   type Policy @key(fields: "id") @key(fields: "quoteId") {
     id:           Int!
     createdAt:    Date!

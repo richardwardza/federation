@@ -1,6 +1,11 @@
 import { Context } from '../context'
 
 export const PolicyModel = {
+  findPolicyByQuoteId: async (id, context: Context) => {
+    return await context.prisma.policy.findFirst({
+      where: { quoteId: id },
+    })
+  },
   findPolicyById: async (id, context: Context) => {
     return await context.prisma.policy.findUnique({
       where: { id },
