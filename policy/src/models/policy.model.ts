@@ -6,4 +6,15 @@ export const PolicyModel = {
       where: { id },
     })
   },
+  createPolicy: async (policy, context: Context) => {
+    const created = await context.prisma.policy.create({
+      data: {
+        name: policy.name,
+        quoteId: policy.quoteId
+      }
+    });
+
+    return created;
+  }
+
 }

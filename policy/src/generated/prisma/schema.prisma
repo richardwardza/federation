@@ -10,44 +10,11 @@ generator client {
   output          = "../src/generated/prisma"
 }
 
-enum PolicyStatus {
-  PENDING
-  ACTIVE
-  INVALID
-  ACCEPTED
-  REJECTED
-}
-
 model Policy {
-  id           String              @id @default(cuid())
-  createdAt    DateTime            @default(now())
-  updatedAt    DateTime            @default(now())
-  version      Int                 @default(value: 1)
-  quoteId      String
-  startDate    DateTime            @default(now())
-  policyNumber String
-  status       PolicyStatus
-  isDeleted    Boolean
-  transactions PolicyTransaction[]
-  details      PolicyDetails[]
-}
-
-model PolicyTransaction {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  version   Int      @default(value: 1)
-  policy    Policy   @relation(fields: [policyId], references: [id])
-  policyId  String
-  name      String
-}
-
-model PolicyDetails {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   version   Int      @default(value: 1)
-  policy    Policy   @relation(fields: [policyId], references: [id])
-  policyId  String
   name      String
+  quoteId   Int
 }

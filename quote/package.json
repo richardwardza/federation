@@ -48,9 +48,6 @@
     "ts-node": "^9.1.1",
     "typescript": "^4.4.3"
   },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
-  },
   "nodemonConfig": {
     "watch": [
       "src"

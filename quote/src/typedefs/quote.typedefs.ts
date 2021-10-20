@@ -3,28 +3,17 @@ import { gql } from 'apollo-server'
 export const quoteTypeDefs = gql`
   scalar Date
 
-  enum QuoteType {
-    CONTENTSFLEX
-  }
-
-  enum QuoteStatus {
-    PENDING
-    ACTIVE
-    ACCEPTED
-    INVALID
-  }
-
   enum AssetMediaType {
     IMAGE
   }
 
+  extend type Policy @key(fields: "quoteId") {
+    quoteId: Int! @external
+    quote: Quote
+  }
 
   type Quote @key(fields: "id") {
-    id: ID!
-    type: QuoteType
-    status: QuoteStatus
-    validFrom: Date
-    validUntil: Date
+    id: Int!
     name: String
     asset: [Asset]
   }
@@ -54,7 +43,7 @@ export const quoteTypeDefs = gql`
   }
 
   type AssetMedia  @key(fields: "id") {
-    id:          ID!
+    id:          Int!
     createdAt:   Date!
     updatedAt:   Date!
     version:     Int!
@@ -67,18 +56,23 @@ export const quoteTypeDefs = gql`
   }
 
   extend type Query {
-    quote(id: ID!): Quote
-    quotes(type: QuoteType): [Quote]
+    quote(id: Int!): Quote
+    quotes: [Quote]
   }
 
   input CreateAssetInput {
-    quoteId:     String
-    policyId:    String
+    quoteId:     Int
+    policyId:    Int
     description: String!
     amount:      Float!
   }
 
+  input CreateQuoteInput {
+    name:      String!
+  }
+
   extend type Mutation {
+    createQuote(input: CreateQuoteInput): Quote
     createAsset(input: CreateAssetInput): Asset
   }
 `

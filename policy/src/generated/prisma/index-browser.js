@@ -81,29 +81,8 @@ exports.Prisma.PolicyScalarFieldEnum = makeEnum({
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   version: 'version',
-  quoteId: 'quoteId',
-  startDate: 'startDate',
-  policyNumber: 'policyNumber',
-  status: 'status',
-  isDeleted: 'isDeleted'
-});
-
-exports.Prisma.PolicyTransactionScalarFieldEnum = makeEnum({
-  id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  version: 'version',
-  policyId: 'policyId',
-  name: 'name'
-});
-
-exports.Prisma.PolicyDetailsScalarFieldEnum = makeEnum({
-  id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  version: 'version',
-  policyId: 'policyId',
-  name: 'name'
+  name: 'name',
+  quoteId: 'quoteId'
 });
 
 exports.Prisma.SortOrder = makeEnum({
@@ -115,18 +94,10 @@ exports.Prisma.QueryMode = makeEnum({
   default: 'default',
   insensitive: 'insensitive'
 });
-exports.PolicyStatus = makeEnum({
-  PENDING: 'PENDING',
-  ACTIVE: 'ACTIVE',
-  INVALID: 'INVALID',
-  ACCEPTED: 'ACCEPTED',
-  REJECTED: 'REJECTED'
-});
+
 
 exports.Prisma.ModelName = makeEnum({
-  Policy: 'Policy',
-  PolicyTransaction: 'PolicyTransaction',
-  PolicyDetails: 'PolicyDetails'
+  Policy: 'Policy'
 });
 
 /**

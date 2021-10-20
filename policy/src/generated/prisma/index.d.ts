@@ -17,60 +17,13 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
  */
 
 export type Policy = {
-  id: string
-  createdAt: Date
-  updatedAt: Date
-  version: number
-  quoteId: string
-  startDate: Date
-  policyNumber: string
-  status: PolicyStatus
-  isDeleted: boolean
-}
-
-/**
- * Model PolicyTransaction
- */
-
-export type PolicyTransaction = {
-  id: string
-  createdAt: Date
-  updatedAt: Date
-  version: number
-  policyId: string
-  name: string
-}
-
-/**
- * Model PolicyDetails
- */
-
-export type PolicyDetails = {
   id: number
   createdAt: Date
   updatedAt: Date
   version: number
-  policyId: string
   name: string
+  quoteId: number
 }
-
-
-/**
- * Enums
- */
-
-// Based on
-// https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
-
-export const PolicyStatus: {
-  PENDING: 'PENDING',
-  ACTIVE: 'ACTIVE',
-  INVALID: 'INVALID',
-  ACCEPTED: 'ACCEPTED',
-  REJECTED: 'REJECTED'
-};
-
-export type PolicyStatus = (typeof PolicyStatus)[keyof typeof PolicyStatus]
 
 
 /**
@@ -224,26 +177,6 @@ export class PrismaClient<
     * ```
     */
   get policy(): Prisma.PolicyDelegate<GlobalReject>;
-
-  /**
-   * `prisma.policyTransaction`: Exposes CRUD operations for the **PolicyTransaction** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more PolicyTransactions
-    * const policyTransactions = await prisma.policyTransaction.findMany()
-    * ```
-    */
-  get policyTransaction(): Prisma.PolicyTransactionDelegate<GlobalReject>;
-
-  /**
-   * `prisma.policyDetails`: Exposes CRUD operations for the **PolicyDetails** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more PolicyDetails
-    * const policyDetails = await prisma.policyDetails.findMany()
-    * ```
-    */
-  get policyDetails(): Prisma.PolicyDetailsDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -636,9 +569,7 @@ export namespace Prisma {
   }
 
   export const ModelName: {
-    Policy: 'Policy',
-    PolicyTransaction: 'PolicyTransaction',
-    PolicyDetails: 'PolicyDetails'
+    Policy: 'Policy'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -793,57 +724,6 @@ export namespace Prisma {
    */
 
 
-  /**
-   * Count Type PolicyCountOutputType
-   */
-
-
-  export type PolicyCountOutputType = {
-    transactions: number
-    details: number
-  }
-
-  export type PolicyCountOutputTypeSelect = {
-    transactions?: boolean
-    details?: boolean
-  }
-
-  export type PolicyCountOutputTypeGetPayload<
-    S extends boolean | null | undefined | PolicyCountOutputTypeArgs,
-    U = keyof S
-      > = S extends true
-        ? PolicyCountOutputType
-    : S extends undefined
-    ? never
-    : S extends PolicyCountOutputTypeArgs
-    ?'include' extends U
-    ? PolicyCountOutputType 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]: P extends keyof PolicyCountOutputType ?PolicyCountOutputType [P]
-  : 
-     never
-  } 
-    : PolicyCountOutputType
-  : PolicyCountOutputType
-
-
-
-
-  // Custom InputTypes
-
-  /**
-   * PolicyCountOutputType without action
-   */
-  export type PolicyCountOutputTypeArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyCountOutputType
-     * 
-    **/
-    select?: PolicyCountOutputTypeSelect | null
-  }
-
-
 
   /**
    * Models
@@ -863,35 +743,33 @@ export namespace Prisma {
   }
 
   export type PolicyAvgAggregateOutputType = {
+    id: number | null
     version: number | null
+    quoteId: number | null
   }
 
   export type PolicySumAggregateOutputType = {
+    id: number | null
     version: number | null
+    quoteId: number | null
   }
 
   export type PolicyMinAggregateOutputType = {
-    id: string | null
+    id: number | null
     createdAt: Date | null
     updatedAt: Date | null
     version: number | null
-    quoteId: string | null
-    startDate: Date | null
-    policyNumber: string | null
-    status: PolicyStatus | null
-    isDeleted: boolean | null
+    name: string | null
+    quoteId: number | null
   }
 
   export type PolicyMaxAggregateOutputType = {
-    id: string | null
+    id: number | null
     createdAt: Date | null
     updatedAt: Date | null
     version: number | null
-    quoteId: string | null
-    startDate: Date | null
-    policyNumber: string | null
-    status: PolicyStatus | null
-    isDeleted: boolean | null
+    name: string | null
+    quoteId: number | null
   }
 
   export type PolicyCountAggregateOutputType = {
@@ -899,21 +777,22 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     version: number
+    name: number
     quoteId: number
-    startDate: number
-    policyNumber: number
-    status: number
-    isDeleted: number
     _all: number
   }
 
 
   export type PolicyAvgAggregateInputType = {
+    id?: true
     version?: true
+    quoteId?: true
   }
 
   export type PolicySumAggregateInputType = {
+    id?: true
     version?: true
+    quoteId?: true
   }
 
   export type PolicyMinAggregateInputType = {
@@ -921,11 +800,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     version?: true
+    name?: true
     quoteId?: true
-    startDate?: true
-    policyNumber?: true
-    status?: true
-    isDeleted?: true
   }
 
   export type PolicyMaxAggregateInputType = {
@@ -933,11 +809,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     version?: true
+    name?: true
     quoteId?: true
-    startDate?: true
-    policyNumber?: true
-    status?: true
-    isDeleted?: true
   }
 
   export type PolicyCountAggregateInputType = {
@@ -945,11 +818,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     version?: true
+    name?: true
     quoteId?: true
-    startDate?: true
-    policyNumber?: true
-    status?: true
-    isDeleted?: true
     _all?: true
   }
 
@@ -1046,15 +916,12 @@ export namespace Prisma {
 
 
   export type PolicyGroupByOutputType = {
-    id: string
+    id: number
     createdAt: Date
     updatedAt: Date
     version: number
-    quoteId: string
-    startDate: Date
-    policyNumber: string
-    status: PolicyStatus
-    isDeleted: boolean
+    name: string
+    quoteId: number
     _count: PolicyCountAggregateOutputType | null
     _avg: PolicyAvgAggregateOutputType | null
     _sum: PolicySumAggregateOutputType | null
@@ -1081,20 +948,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     version?: boolean
+    name?: boolean
     quoteId?: boolean
-    startDate?: boolean
-    policyNumber?: boolean
-    status?: boolean
-    isDeleted?: boolean
-    transactions?: boolean | PolicyTransactionFindManyArgs
-    details?: boolean | PolicyDetailsFindManyArgs
-    _count?: boolean | PolicyCountOutputTypeArgs
-  }
-
-  export type PolicyInclude = {
-    transactions?: boolean | PolicyTransactionFindManyArgs
-    details?: boolean | PolicyDetailsFindManyArgs
-    _count?: boolean | PolicyCountOutputTypeArgs
   }
 
   export type PolicyGetPayload<
@@ -1106,25 +961,12 @@ export namespace Prisma {
     ? never
     : S extends PolicyArgs | PolicyFindManyArgs
     ?'include' extends U
-    ? Policy  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'transactions'
-        ? Array < PolicyTransactionGetPayload<S['include'][P]>>  :
-        P extends 'details'
-        ? Array < PolicyDetailsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? PolicyCountOutputTypeGetPayload<S['include'][P]> | null : never
-  } 
+    ? Policy 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof Policy ?Policy [P]
   : 
-          P extends 'transactions'
-        ? Array < PolicyTransactionGetPayload<S['select'][P]>>  :
-        P extends 'details'
-        ? Array < PolicyDetailsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? PolicyCountOutputTypeGetPayload<S['select'][P]> | null : never
+     never
   } 
     : Policy
   : Policy
@@ -1464,9 +1306,6 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    transactions<T extends PolicyTransactionFindManyArgs = {}>(args?: Subset<T, PolicyTransactionFindManyArgs>): CheckSelect<T, PrismaPromise<Array<PolicyTransaction>>, PrismaPromise<Array<PolicyTransactionGetPayload<T>>>>;
-
-    details<T extends PolicyDetailsFindManyArgs = {}>(args?: Subset<T, PolicyDetailsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<PolicyDetails>>, PrismaPromise<Array<PolicyDetailsGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -1503,11 +1342,6 @@ export namespace Prisma {
     **/
     select?: PolicySelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyInclude | null
-    /**
      * Throw an Error if a Policy can't be found
      * 
     **/
@@ -1529,11 +1363,6 @@ export namespace Prisma {
      * 
     **/
     select?: PolicySelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyInclude | null
     /**
      * Throw an Error if a Policy can't be found
      * 
@@ -1592,11 +1421,6 @@ export namespace Prisma {
     **/
     select?: PolicySelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyInclude | null
-    /**
      * Filter, which Policies to fetch.
      * 
     **/
@@ -1643,11 +1467,6 @@ export namespace Prisma {
     **/
     select?: PolicySelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyInclude | null
-    /**
      * The data needed to create a Policy.
      * 
     **/
@@ -1673,11 +1492,6 @@ export namespace Prisma {
      * 
     **/
     select?: PolicySelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyInclude | null
     /**
      * The data needed to update a Policy.
      * 
@@ -1710,11 +1524,6 @@ export namespace Prisma {
     **/
     select?: PolicySelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyInclude | null
-    /**
      * The filter to search for the Policy to update in case it exists.
      * 
     **/
@@ -1742,11 +1551,6 @@ export namespace Prisma {
     **/
     select?: PolicySelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyInclude | null
-    /**
      * Filter which Policy to delete.
      * 
     **/
@@ -1771,1801 +1575,6 @@ export namespace Prisma {
      * 
     **/
     select?: PolicySelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyInclude | null
-  }
-
-
-
-  /**
-   * Model PolicyTransaction
-   */
-
-
-  export type AggregatePolicyTransaction = {
-    _count: PolicyTransactionCountAggregateOutputType | null
-    _avg: PolicyTransactionAvgAggregateOutputType | null
-    _sum: PolicyTransactionSumAggregateOutputType | null
-    _min: PolicyTransactionMinAggregateOutputType | null
-    _max: PolicyTransactionMaxAggregateOutputType | null
-  }
-
-  export type PolicyTransactionAvgAggregateOutputType = {
-    version: number | null
-  }
-
-  export type PolicyTransactionSumAggregateOutputType = {
-    version: number | null
-  }
-
-  export type PolicyTransactionMinAggregateOutputType = {
-    id: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    version: number | null
-    policyId: string | null
-    name: string | null
-  }
-
-  export type PolicyTransactionMaxAggregateOutputType = {
-    id: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    version: number | null
-    policyId: string | null
-    name: string | null
-  }
-
-  export type PolicyTransactionCountAggregateOutputType = {
-    id: number
-    createdAt: number
-    updatedAt: number
-    version: number
-    policyId: number
-    name: number
-    _all: number
-  }
-
-
-  export type PolicyTransactionAvgAggregateInputType = {
-    version?: true
-  }
-
-  export type PolicyTransactionSumAggregateInputType = {
-    version?: true
-  }
-
-  export type PolicyTransactionMinAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    version?: true
-    policyId?: true
-    name?: true
-  }
-
-  export type PolicyTransactionMaxAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    version?: true
-    policyId?: true
-    name?: true
-  }
-
-  export type PolicyTransactionCountAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    version?: true
-    policyId?: true
-    name?: true
-    _all?: true
-  }
-
-  export type PolicyTransactionAggregateArgs = {
-    /**
-     * Filter which PolicyTransaction to aggregate.
-     * 
-    **/
-    where?: PolicyTransactionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PolicyTransactions to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<PolicyTransactionOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     * 
-    **/
-    cursor?: PolicyTransactionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PolicyTransactions from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PolicyTransactions.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned PolicyTransactions
-    **/
-    _count?: true | PolicyTransactionCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: PolicyTransactionAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: PolicyTransactionSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: PolicyTransactionMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: PolicyTransactionMaxAggregateInputType
-  }
-
-  export type GetPolicyTransactionAggregateType<T extends PolicyTransactionAggregateArgs> = {
-        [P in keyof T & keyof AggregatePolicyTransaction]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregatePolicyTransaction[P]>
-      : GetScalarType<T[P], AggregatePolicyTransaction[P]>
-  }
-
-
-    
-    
-  export type PolicyTransactionGroupByArgs = {
-    where?: PolicyTransactionWhereInput
-    orderBy?: Enumerable<PolicyTransactionOrderByWithAggregationInput>
-    by: Array<PolicyTransactionScalarFieldEnum>
-    having?: PolicyTransactionScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: PolicyTransactionCountAggregateInputType | true
-    _avg?: PolicyTransactionAvgAggregateInputType
-    _sum?: PolicyTransactionSumAggregateInputType
-    _min?: PolicyTransactionMinAggregateInputType
-    _max?: PolicyTransactionMaxAggregateInputType
-  }
-
-
-  export type PolicyTransactionGroupByOutputType = {
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    version: number
-    policyId: string
-    name: string
-    _count: PolicyTransactionCountAggregateOutputType | null
-    _avg: PolicyTransactionAvgAggregateOutputType | null
-    _sum: PolicyTransactionSumAggregateOutputType | null
-    _min: PolicyTransactionMinAggregateOutputType | null
-    _max: PolicyTransactionMaxAggregateOutputType | null
-  }
-
-  type GetPolicyTransactionGroupByPayload<T extends PolicyTransactionGroupByArgs> = Promise<
-    Array<
-      PickArray<PolicyTransactionGroupByOutputType, T['by']> & 
-        {
-          [P in ((keyof T) & (keyof PolicyTransactionGroupByOutputType))]: P extends '_count' 
-            ? T[P] extends boolean 
-              ? number 
-              : GetScalarType<T[P], PolicyTransactionGroupByOutputType[P]> 
-            : GetScalarType<T[P], PolicyTransactionGroupByOutputType[P]>
-        }
-      > 
-    >
-
-
-  export type PolicyTransactionSelect = {
-    id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    version?: boolean
-    policy?: boolean | PolicyArgs
-    policyId?: boolean
-    name?: boolean
-  }
-
-  export type PolicyTransactionInclude = {
-    policy?: boolean | PolicyArgs
-  }
-
-  export type PolicyTransactionGetPayload<
-    S extends boolean | null | undefined | PolicyTransactionArgs,
-    U = keyof S
-      > = S extends true
-        ? PolicyTransaction
-    : S extends undefined
-    ? never
-    : S extends PolicyTransactionArgs | PolicyTransactionFindManyArgs
-    ?'include' extends U
-    ? PolicyTransaction  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'policy'
-        ? PolicyGetPayload<S['include'][P]> : never
-  } 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]: P extends keyof PolicyTransaction ?PolicyTransaction [P]
-  : 
-          P extends 'policy'
-        ? PolicyGetPayload<S['select'][P]> : never
-  } 
-    : PolicyTransaction
-  : PolicyTransaction
-
-
-  type PolicyTransactionCountArgs = Merge<
-    Omit<PolicyTransactionFindManyArgs, 'select' | 'include'> & {
-      select?: PolicyTransactionCountAggregateInputType | true
-    }
-  >
-
-  export interface PolicyTransactionDelegate<GlobalRejectSettings> {
-    /**
-     * Find zero or one PolicyTransaction that matches the filter.
-     * @param {PolicyTransactionFindUniqueArgs} args - Arguments to find a PolicyTransaction
-     * @example
-     * // Get one PolicyTransaction
-     * const policyTransaction = await prisma.policyTransaction.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends PolicyTransactionFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, PolicyTransactionFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'PolicyTransaction'> extends True ? CheckSelect<T, Prisma__PolicyTransactionClient<PolicyTransaction>, Prisma__PolicyTransactionClient<PolicyTransactionGetPayload<T>>> : CheckSelect<T, Prisma__PolicyTransactionClient<PolicyTransaction | null >, Prisma__PolicyTransactionClient<PolicyTransactionGetPayload<T> | null >>
-
-    /**
-     * Find the first PolicyTransaction that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyTransactionFindFirstArgs} args - Arguments to find a PolicyTransaction
-     * @example
-     * // Get one PolicyTransaction
-     * const policyTransaction = await prisma.policyTransaction.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends PolicyTransactionFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, PolicyTransactionFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'PolicyTransaction'> extends True ? CheckSelect<T, Prisma__PolicyTransactionClient<PolicyTransaction>, Prisma__PolicyTransactionClient<PolicyTransactionGetPayload<T>>> : CheckSelect<T, Prisma__PolicyTransactionClient<PolicyTransaction | null >, Prisma__PolicyTransactionClient<PolicyTransactionGetPayload<T> | null >>
-
-    /**
-     * Find zero or more PolicyTransactions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyTransactionFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all PolicyTransactions
-     * const policyTransactions = await prisma.policyTransaction.findMany()
-     * 
-     * // Get first 10 PolicyTransactions
-     * const policyTransactions = await prisma.policyTransaction.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const policyTransactionWithIdOnly = await prisma.policyTransaction.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends PolicyTransactionFindManyArgs>(
-      args?: SelectSubset<T, PolicyTransactionFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<PolicyTransaction>>, PrismaPromise<Array<PolicyTransactionGetPayload<T>>>>
-
-    /**
-     * Create a PolicyTransaction.
-     * @param {PolicyTransactionCreateArgs} args - Arguments to create a PolicyTransaction.
-     * @example
-     * // Create one PolicyTransaction
-     * const PolicyTransaction = await prisma.policyTransaction.create({
-     *   data: {
-     *     // ... data to create a PolicyTransaction
-     *   }
-     * })
-     * 
-    **/
-    create<T extends PolicyTransactionCreateArgs>(
-      args: SelectSubset<T, PolicyTransactionCreateArgs>
-    ): CheckSelect<T, Prisma__PolicyTransactionClient<PolicyTransaction>, Prisma__PolicyTransactionClient<PolicyTransactionGetPayload<T>>>
-
-    /**
-     * Create many PolicyTransactions.
-     *     @param {PolicyTransactionCreateManyArgs} args - Arguments to create many PolicyTransactions.
-     *     @example
-     *     // Create many PolicyTransactions
-     *     const policyTransaction = await prisma.policyTransaction.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends PolicyTransactionCreateManyArgs>(
-      args?: SelectSubset<T, PolicyTransactionCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a PolicyTransaction.
-     * @param {PolicyTransactionDeleteArgs} args - Arguments to delete one PolicyTransaction.
-     * @example
-     * // Delete one PolicyTransaction
-     * const PolicyTransaction = await prisma.policyTransaction.delete({
-     *   where: {
-     *     // ... filter to delete one PolicyTransaction
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends PolicyTransactionDeleteArgs>(
-      args: SelectSubset<T, PolicyTransactionDeleteArgs>
-    ): CheckSelect<T, Prisma__PolicyTransactionClient<PolicyTransaction>, Prisma__PolicyTransactionClient<PolicyTransactionGetPayload<T>>>
-
-    /**
-     * Update one PolicyTransaction.
-     * @param {PolicyTransactionUpdateArgs} args - Arguments to update one PolicyTransaction.
-     * @example
-     * // Update one PolicyTransaction
-     * const policyTransaction = await prisma.policyTransaction.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends PolicyTransactionUpdateArgs>(
-      args: SelectSubset<T, PolicyTransactionUpdateArgs>
-    ): CheckSelect<T, Prisma__PolicyTransactionClient<PolicyTransaction>, Prisma__PolicyTransactionClient<PolicyTransactionGetPayload<T>>>
-
-    /**
-     * Delete zero or more PolicyTransactions.
-     * @param {PolicyTransactionDeleteManyArgs} args - Arguments to filter PolicyTransactions to delete.
-     * @example
-     * // Delete a few PolicyTransactions
-     * const { count } = await prisma.policyTransaction.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends PolicyTransactionDeleteManyArgs>(
-      args?: SelectSubset<T, PolicyTransactionDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more PolicyTransactions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyTransactionUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many PolicyTransactions
-     * const policyTransaction = await prisma.policyTransaction.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends PolicyTransactionUpdateManyArgs>(
-      args: SelectSubset<T, PolicyTransactionUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one PolicyTransaction.
-     * @param {PolicyTransactionUpsertArgs} args - Arguments to update or create a PolicyTransaction.
-     * @example
-     * // Update or create a PolicyTransaction
-     * const policyTransaction = await prisma.policyTransaction.upsert({
-     *   create: {
-     *     // ... data to create a PolicyTransaction
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the PolicyTransaction we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends PolicyTransactionUpsertArgs>(
-      args: SelectSubset<T, PolicyTransactionUpsertArgs>
-    ): CheckSelect<T, Prisma__PolicyTransactionClient<PolicyTransaction>, Prisma__PolicyTransactionClient<PolicyTransactionGetPayload<T>>>
-
-    /**
-     * Count the number of PolicyTransactions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyTransactionCountArgs} args - Arguments to filter PolicyTransactions to count.
-     * @example
-     * // Count the number of PolicyTransactions
-     * const count = await prisma.policyTransaction.count({
-     *   where: {
-     *     // ... the filter for the PolicyTransactions we want to count
-     *   }
-     * })
-    **/
-    count<T extends PolicyTransactionCountArgs>(
-      args?: Subset<T, PolicyTransactionCountArgs>,
-    ): PrismaPromise<
-      T extends _Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], PolicyTransactionCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a PolicyTransaction.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyTransactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends PolicyTransactionAggregateArgs>(args: Subset<T, PolicyTransactionAggregateArgs>): PrismaPromise<GetPolicyTransactionAggregateType<T>>
-
-    /**
-     * Group by PolicyTransaction.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyTransactionGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends PolicyTransactionGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: PolicyTransactionGroupByArgs['orderBy'] }
-        : { orderBy?: PolicyTransactionGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends TupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, PolicyTransactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPolicyTransactionGroupByPayload<T> : Promise<InputErrors>
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for PolicyTransaction.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in 
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export class Prisma__PolicyTransactionClient<T> implements PrismaPromise<T> {
-    [prisma]: true;
-    private readonly _dmmf;
-    private readonly _fetcher;
-    private readonly _queryType;
-    private readonly _rootField;
-    private readonly _clientMethod;
-    private readonly _args;
-    private readonly _dataPath;
-    private readonly _errorFormat;
-    private readonly _measurePerformance?;
-    private _isList;
-    private _callsite;
-    private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
-
-    policy<T extends PolicyArgs = {}>(args?: Subset<T, PolicyArgs>): CheckSelect<T, Prisma__PolicyClient<Policy | null >, Prisma__PolicyClient<PolicyGetPayload<T> | null >>;
-
-    private get _document();
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
-  }
-
-  // Custom InputTypes
-
-  /**
-   * PolicyTransaction findUnique
-   */
-  export type PolicyTransactionFindUniqueArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyTransaction
-     * 
-    **/
-    select?: PolicyTransactionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyTransactionInclude | null
-    /**
-     * Throw an Error if a PolicyTransaction can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
-    /**
-     * Filter, which PolicyTransaction to fetch.
-     * 
-    **/
-    where: PolicyTransactionWhereUniqueInput
-  }
-
-
-  /**
-   * PolicyTransaction findFirst
-   */
-  export type PolicyTransactionFindFirstArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyTransaction
-     * 
-    **/
-    select?: PolicyTransactionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyTransactionInclude | null
-    /**
-     * Throw an Error if a PolicyTransaction can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
-    /**
-     * Filter, which PolicyTransaction to fetch.
-     * 
-    **/
-    where?: PolicyTransactionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PolicyTransactions to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<PolicyTransactionOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for PolicyTransactions.
-     * 
-    **/
-    cursor?: PolicyTransactionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PolicyTransactions from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PolicyTransactions.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of PolicyTransactions.
-     * 
-    **/
-    distinct?: Enumerable<PolicyTransactionScalarFieldEnum>
-  }
-
-
-  /**
-   * PolicyTransaction findMany
-   */
-  export type PolicyTransactionFindManyArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyTransaction
-     * 
-    **/
-    select?: PolicyTransactionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyTransactionInclude | null
-    /**
-     * Filter, which PolicyTransactions to fetch.
-     * 
-    **/
-    where?: PolicyTransactionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PolicyTransactions to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<PolicyTransactionOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing PolicyTransactions.
-     * 
-    **/
-    cursor?: PolicyTransactionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PolicyTransactions from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PolicyTransactions.
-     * 
-    **/
-    skip?: number
-    distinct?: Enumerable<PolicyTransactionScalarFieldEnum>
-  }
-
-
-  /**
-   * PolicyTransaction create
-   */
-  export type PolicyTransactionCreateArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyTransaction
-     * 
-    **/
-    select?: PolicyTransactionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyTransactionInclude | null
-    /**
-     * The data needed to create a PolicyTransaction.
-     * 
-    **/
-    data: XOR<PolicyTransactionCreateInput, PolicyTransactionUncheckedCreateInput>
-  }
-
-
-  /**
-   * PolicyTransaction createMany
-   */
-  export type PolicyTransactionCreateManyArgs = {
-    data: Enumerable<PolicyTransactionCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
-
-  /**
-   * PolicyTransaction update
-   */
-  export type PolicyTransactionUpdateArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyTransaction
-     * 
-    **/
-    select?: PolicyTransactionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyTransactionInclude | null
-    /**
-     * The data needed to update a PolicyTransaction.
-     * 
-    **/
-    data: XOR<PolicyTransactionUpdateInput, PolicyTransactionUncheckedUpdateInput>
-    /**
-     * Choose, which PolicyTransaction to update.
-     * 
-    **/
-    where: PolicyTransactionWhereUniqueInput
-  }
-
-
-  /**
-   * PolicyTransaction updateMany
-   */
-  export type PolicyTransactionUpdateManyArgs = {
-    data: XOR<PolicyTransactionUpdateManyMutationInput, PolicyTransactionUncheckedUpdateManyInput>
-    where?: PolicyTransactionWhereInput
-  }
-
-
-  /**
-   * PolicyTransaction upsert
-   */
-  export type PolicyTransactionUpsertArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyTransaction
-     * 
-    **/
-    select?: PolicyTransactionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyTransactionInclude | null
-    /**
-     * The filter to search for the PolicyTransaction to update in case it exists.
-     * 
-    **/
-    where: PolicyTransactionWhereUniqueInput
-    /**
-     * In case the PolicyTransaction found by the `where` argument doesn't exist, create a new PolicyTransaction with this data.
-     * 
-    **/
-    create: XOR<PolicyTransactionCreateInput, PolicyTransactionUncheckedCreateInput>
-    /**
-     * In case the PolicyTransaction was found with the provided `where` argument, update it with this data.
-     * 
-    **/
-    update: XOR<PolicyTransactionUpdateInput, PolicyTransactionUncheckedUpdateInput>
-  }
-
-
-  /**
-   * PolicyTransaction delete
-   */
-  export type PolicyTransactionDeleteArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyTransaction
-     * 
-    **/
-    select?: PolicyTransactionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyTransactionInclude | null
-    /**
-     * Filter which PolicyTransaction to delete.
-     * 
-    **/
-    where: PolicyTransactionWhereUniqueInput
-  }
-
-
-  /**
-   * PolicyTransaction deleteMany
-   */
-  export type PolicyTransactionDeleteManyArgs = {
-    where?: PolicyTransactionWhereInput
-  }
-
-
-  /**
-   * PolicyTransaction without action
-   */
-  export type PolicyTransactionArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyTransaction
-     * 
-    **/
-    select?: PolicyTransactionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyTransactionInclude | null
-  }
-
-
-
-  /**
-   * Model PolicyDetails
-   */
-
-
-  export type AggregatePolicyDetails = {
-    _count: PolicyDetailsCountAggregateOutputType | null
-    _avg: PolicyDetailsAvgAggregateOutputType | null
-    _sum: PolicyDetailsSumAggregateOutputType | null
-    _min: PolicyDetailsMinAggregateOutputType | null
-    _max: PolicyDetailsMaxAggregateOutputType | null
-  }
-
-  export type PolicyDetailsAvgAggregateOutputType = {
-    id: number | null
-    version: number | null
-  }
-
-  export type PolicyDetailsSumAggregateOutputType = {
-    id: number | null
-    version: number | null
-  }
-
-  export type PolicyDetailsMinAggregateOutputType = {
-    id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    version: number | null
-    policyId: string | null
-    name: string | null
-  }
-
-  export type PolicyDetailsMaxAggregateOutputType = {
-    id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    version: number | null
-    policyId: string | null
-    name: string | null
-  }
-
-  export type PolicyDetailsCountAggregateOutputType = {
-    id: number
-    createdAt: number
-    updatedAt: number
-    version: number
-    policyId: number
-    name: number
-    _all: number
-  }
-
-
-  export type PolicyDetailsAvgAggregateInputType = {
-    id?: true
-    version?: true
-  }
-
-  export type PolicyDetailsSumAggregateInputType = {
-    id?: true
-    version?: true
-  }
-
-  export type PolicyDetailsMinAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    version?: true
-    policyId?: true
-    name?: true
-  }
-
-  export type PolicyDetailsMaxAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    version?: true
-    policyId?: true
-    name?: true
-  }
-
-  export type PolicyDetailsCountAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    version?: true
-    policyId?: true
-    name?: true
-    _all?: true
-  }
-
-  export type PolicyDetailsAggregateArgs = {
-    /**
-     * Filter which PolicyDetails to aggregate.
-     * 
-    **/
-    where?: PolicyDetailsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PolicyDetails to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<PolicyDetailsOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     * 
-    **/
-    cursor?: PolicyDetailsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PolicyDetails from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PolicyDetails.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned PolicyDetails
-    **/
-    _count?: true | PolicyDetailsCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: PolicyDetailsAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: PolicyDetailsSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: PolicyDetailsMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: PolicyDetailsMaxAggregateInputType
-  }
-
-  export type GetPolicyDetailsAggregateType<T extends PolicyDetailsAggregateArgs> = {
-        [P in keyof T & keyof AggregatePolicyDetails]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregatePolicyDetails[P]>
-      : GetScalarType<T[P], AggregatePolicyDetails[P]>
-  }
-
-
-    
-    
-  export type PolicyDetailsGroupByArgs = {
-    where?: PolicyDetailsWhereInput
-    orderBy?: Enumerable<PolicyDetailsOrderByWithAggregationInput>
-    by: Array<PolicyDetailsScalarFieldEnum>
-    having?: PolicyDetailsScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: PolicyDetailsCountAggregateInputType | true
-    _avg?: PolicyDetailsAvgAggregateInputType
-    _sum?: PolicyDetailsSumAggregateInputType
-    _min?: PolicyDetailsMinAggregateInputType
-    _max?: PolicyDetailsMaxAggregateInputType
-  }
-
-
-  export type PolicyDetailsGroupByOutputType = {
-    id: number
-    createdAt: Date
-    updatedAt: Date
-    version: number
-    policyId: string
-    name: string
-    _count: PolicyDetailsCountAggregateOutputType | null
-    _avg: PolicyDetailsAvgAggregateOutputType | null
-    _sum: PolicyDetailsSumAggregateOutputType | null
-    _min: PolicyDetailsMinAggregateOutputType | null
-    _max: PolicyDetailsMaxAggregateOutputType | null
-  }
-
-  type GetPolicyDetailsGroupByPayload<T extends PolicyDetailsGroupByArgs> = Promise<
-    Array<
-      PickArray<PolicyDetailsGroupByOutputType, T['by']> & 
-        {
-          [P in ((keyof T) & (keyof PolicyDetailsGroupByOutputType))]: P extends '_count' 
-            ? T[P] extends boolean 
-              ? number 
-              : GetScalarType<T[P], PolicyDetailsGroupByOutputType[P]> 
-            : GetScalarType<T[P], PolicyDetailsGroupByOutputType[P]>
-        }
-      > 
-    >
-
-
-  export type PolicyDetailsSelect = {
-    id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    version?: boolean
-    policy?: boolean | PolicyArgs
-    policyId?: boolean
-    name?: boolean
-  }
-
-  export type PolicyDetailsInclude = {
-    policy?: boolean | PolicyArgs
-  }
-
-  export type PolicyDetailsGetPayload<
-    S extends boolean | null | undefined | PolicyDetailsArgs,
-    U = keyof S
-      > = S extends true
-        ? PolicyDetails
-    : S extends undefined
-    ? never
-    : S extends PolicyDetailsArgs | PolicyDetailsFindManyArgs
-    ?'include' extends U
-    ? PolicyDetails  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'policy'
-        ? PolicyGetPayload<S['include'][P]> : never
-  } 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]: P extends keyof PolicyDetails ?PolicyDetails [P]
-  : 
-          P extends 'policy'
-        ? PolicyGetPayload<S['select'][P]> : never
-  } 
-    : PolicyDetails
-  : PolicyDetails
-
-
-  type PolicyDetailsCountArgs = Merge<
-    Omit<PolicyDetailsFindManyArgs, 'select' | 'include'> & {
-      select?: PolicyDetailsCountAggregateInputType | true
-    }
-  >
-
-  export interface PolicyDetailsDelegate<GlobalRejectSettings> {
-    /**
-     * Find zero or one PolicyDetails that matches the filter.
-     * @param {PolicyDetailsFindUniqueArgs} args - Arguments to find a PolicyDetails
-     * @example
-     * // Get one PolicyDetails
-     * const policyDetails = await prisma.policyDetails.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends PolicyDetailsFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, PolicyDetailsFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'PolicyDetails'> extends True ? CheckSelect<T, Prisma__PolicyDetailsClient<PolicyDetails>, Prisma__PolicyDetailsClient<PolicyDetailsGetPayload<T>>> : CheckSelect<T, Prisma__PolicyDetailsClient<PolicyDetails | null >, Prisma__PolicyDetailsClient<PolicyDetailsGetPayload<T> | null >>
-
-    /**
-     * Find the first PolicyDetails that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyDetailsFindFirstArgs} args - Arguments to find a PolicyDetails
-     * @example
-     * // Get one PolicyDetails
-     * const policyDetails = await prisma.policyDetails.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends PolicyDetailsFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, PolicyDetailsFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'PolicyDetails'> extends True ? CheckSelect<T, Prisma__PolicyDetailsClient<PolicyDetails>, Prisma__PolicyDetailsClient<PolicyDetailsGetPayload<T>>> : CheckSelect<T, Prisma__PolicyDetailsClient<PolicyDetails | null >, Prisma__PolicyDetailsClient<PolicyDetailsGetPayload<T> | null >>
-
-    /**
-     * Find zero or more PolicyDetails that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyDetailsFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all PolicyDetails
-     * const policyDetails = await prisma.policyDetails.findMany()
-     * 
-     * // Get first 10 PolicyDetails
-     * const policyDetails = await prisma.policyDetails.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const policyDetailsWithIdOnly = await prisma.policyDetails.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends PolicyDetailsFindManyArgs>(
-      args?: SelectSubset<T, PolicyDetailsFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<PolicyDetails>>, PrismaPromise<Array<PolicyDetailsGetPayload<T>>>>
-
-    /**
-     * Create a PolicyDetails.
-     * @param {PolicyDetailsCreateArgs} args - Arguments to create a PolicyDetails.
-     * @example
-     * // Create one PolicyDetails
-     * const PolicyDetails = await prisma.policyDetails.create({
-     *   data: {
-     *     // ... data to create a PolicyDetails
-     *   }
-     * })
-     * 
-    **/
-    create<T extends PolicyDetailsCreateArgs>(
-      args: SelectSubset<T, PolicyDetailsCreateArgs>
-    ): CheckSelect<T, Prisma__PolicyDetailsClient<PolicyDetails>, Prisma__PolicyDetailsClient<PolicyDetailsGetPayload<T>>>
-
-    /**
-     * Create many PolicyDetails.
-     *     @param {PolicyDetailsCreateManyArgs} args - Arguments to create many PolicyDetails.
-     *     @example
-     *     // Create many PolicyDetails
-     *     const policyDetails = await prisma.policyDetails.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends PolicyDetailsCreateManyArgs>(
-      args?: SelectSubset<T, PolicyDetailsCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a PolicyDetails.
-     * @param {PolicyDetailsDeleteArgs} args - Arguments to delete one PolicyDetails.
-     * @example
-     * // Delete one PolicyDetails
-     * const PolicyDetails = await prisma.policyDetails.delete({
-     *   where: {
-     *     // ... filter to delete one PolicyDetails
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends PolicyDetailsDeleteArgs>(
-      args: SelectSubset<T, PolicyDetailsDeleteArgs>
-    ): CheckSelect<T, Prisma__PolicyDetailsClient<PolicyDetails>, Prisma__PolicyDetailsClient<PolicyDetailsGetPayload<T>>>
-
-    /**
-     * Update one PolicyDetails.
-     * @param {PolicyDetailsUpdateArgs} args - Arguments to update one PolicyDetails.
-     * @example
-     * // Update one PolicyDetails
-     * const policyDetails = await prisma.policyDetails.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends PolicyDetailsUpdateArgs>(
-      args: SelectSubset<T, PolicyDetailsUpdateArgs>
-    ): CheckSelect<T, Prisma__PolicyDetailsClient<PolicyDetails>, Prisma__PolicyDetailsClient<PolicyDetailsGetPayload<T>>>
-
-    /**
-     * Delete zero or more PolicyDetails.
-     * @param {PolicyDetailsDeleteManyArgs} args - Arguments to filter PolicyDetails to delete.
-     * @example
-     * // Delete a few PolicyDetails
-     * const { count } = await prisma.policyDetails.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends PolicyDetailsDeleteManyArgs>(
-      args?: SelectSubset<T, PolicyDetailsDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more PolicyDetails.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyDetailsUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many PolicyDetails
-     * const policyDetails = await prisma.policyDetails.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends PolicyDetailsUpdateManyArgs>(
-      args: SelectSubset<T, PolicyDetailsUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one PolicyDetails.
-     * @param {PolicyDetailsUpsertArgs} args - Arguments to update or create a PolicyDetails.
-     * @example
-     * // Update or create a PolicyDetails
-     * const policyDetails = await prisma.policyDetails.upsert({
-     *   create: {
-     *     // ... data to create a PolicyDetails
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the PolicyDetails we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends PolicyDetailsUpsertArgs>(
-      args: SelectSubset<T, PolicyDetailsUpsertArgs>
-    ): CheckSelect<T, Prisma__PolicyDetailsClient<PolicyDetails>, Prisma__PolicyDetailsClient<PolicyDetailsGetPayload<T>>>
-
-    /**
-     * Count the number of PolicyDetails.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyDetailsCountArgs} args - Arguments to filter PolicyDetails to count.
-     * @example
-     * // Count the number of PolicyDetails
-     * const count = await prisma.policyDetails.count({
-     *   where: {
-     *     // ... the filter for the PolicyDetails we want to count
-     *   }
-     * })
-    **/
-    count<T extends PolicyDetailsCountArgs>(
-      args?: Subset<T, PolicyDetailsCountArgs>,
-    ): PrismaPromise<
-      T extends _Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], PolicyDetailsCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a PolicyDetails.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyDetailsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends PolicyDetailsAggregateArgs>(args: Subset<T, PolicyDetailsAggregateArgs>): PrismaPromise<GetPolicyDetailsAggregateType<T>>
-
-    /**
-     * Group by PolicyDetails.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PolicyDetailsGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends PolicyDetailsGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: PolicyDetailsGroupByArgs['orderBy'] }
-        : { orderBy?: PolicyDetailsGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends TupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, PolicyDetailsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPolicyDetailsGroupByPayload<T> : Promise<InputErrors>
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for PolicyDetails.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in 
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export class Prisma__PolicyDetailsClient<T> implements PrismaPromise<T> {
-    [prisma]: true;
-    private readonly _dmmf;
-    private readonly _fetcher;
-    private readonly _queryType;
-    private readonly _rootField;
-    private readonly _clientMethod;
-    private readonly _args;
-    private readonly _dataPath;
-    private readonly _errorFormat;
-    private readonly _measurePerformance?;
-    private _isList;
-    private _callsite;
-    private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
-
-    policy<T extends PolicyArgs = {}>(args?: Subset<T, PolicyArgs>): CheckSelect<T, Prisma__PolicyClient<Policy | null >, Prisma__PolicyClient<PolicyGetPayload<T> | null >>;
-
-    private get _document();
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
-  }
-
-  // Custom InputTypes
-
-  /**
-   * PolicyDetails findUnique
-   */
-  export type PolicyDetailsFindUniqueArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyDetails
-     * 
-    **/
-    select?: PolicyDetailsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyDetailsInclude | null
-    /**
-     * Throw an Error if a PolicyDetails can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
-    /**
-     * Filter, which PolicyDetails to fetch.
-     * 
-    **/
-    where: PolicyDetailsWhereUniqueInput
-  }
-
-
-  /**
-   * PolicyDetails findFirst
-   */
-  export type PolicyDetailsFindFirstArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyDetails
-     * 
-    **/
-    select?: PolicyDetailsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyDetailsInclude | null
-    /**
-     * Throw an Error if a PolicyDetails can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
-    /**
-     * Filter, which PolicyDetails to fetch.
-     * 
-    **/
-    where?: PolicyDetailsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PolicyDetails to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<PolicyDetailsOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for PolicyDetails.
-     * 
-    **/
-    cursor?: PolicyDetailsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PolicyDetails from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PolicyDetails.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of PolicyDetails.
-     * 
-    **/
-    distinct?: Enumerable<PolicyDetailsScalarFieldEnum>
-  }
-
-
-  /**
-   * PolicyDetails findMany
-   */
-  export type PolicyDetailsFindManyArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyDetails
-     * 
-    **/
-    select?: PolicyDetailsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyDetailsInclude | null
-    /**
-     * Filter, which PolicyDetails to fetch.
-     * 
-    **/
-    where?: PolicyDetailsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PolicyDetails to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<PolicyDetailsOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing PolicyDetails.
-     * 
-    **/
-    cursor?: PolicyDetailsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PolicyDetails from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PolicyDetails.
-     * 
-    **/
-    skip?: number
-    distinct?: Enumerable<PolicyDetailsScalarFieldEnum>
-  }
-
-
-  /**
-   * PolicyDetails create
-   */
-  export type PolicyDetailsCreateArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyDetails
-     * 
-    **/
-    select?: PolicyDetailsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyDetailsInclude | null
-    /**
-     * The data needed to create a PolicyDetails.
-     * 
-    **/
-    data: XOR<PolicyDetailsCreateInput, PolicyDetailsUncheckedCreateInput>
-  }
-
-
-  /**
-   * PolicyDetails createMany
-   */
-  export type PolicyDetailsCreateManyArgs = {
-    data: Enumerable<PolicyDetailsCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
-
-  /**
-   * PolicyDetails update
-   */
-  export type PolicyDetailsUpdateArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyDetails
-     * 
-    **/
-    select?: PolicyDetailsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyDetailsInclude | null
-    /**
-     * The data needed to update a PolicyDetails.
-     * 
-    **/
-    data: XOR<PolicyDetailsUpdateInput, PolicyDetailsUncheckedUpdateInput>
-    /**
-     * Choose, which PolicyDetails to update.
-     * 
-    **/
-    where: PolicyDetailsWhereUniqueInput
-  }
-
-
-  /**
-   * PolicyDetails updateMany
-   */
-  export type PolicyDetailsUpdateManyArgs = {
-    data: XOR<PolicyDetailsUpdateManyMutationInput, PolicyDetailsUncheckedUpdateManyInput>
-    where?: PolicyDetailsWhereInput
-  }
-
-
-  /**
-   * PolicyDetails upsert
-   */
-  export type PolicyDetailsUpsertArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyDetails
-     * 
-    **/
-    select?: PolicyDetailsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyDetailsInclude | null
-    /**
-     * The filter to search for the PolicyDetails to update in case it exists.
-     * 
-    **/
-    where: PolicyDetailsWhereUniqueInput
-    /**
-     * In case the PolicyDetails found by the `where` argument doesn't exist, create a new PolicyDetails with this data.
-     * 
-    **/
-    create: XOR<PolicyDetailsCreateInput, PolicyDetailsUncheckedCreateInput>
-    /**
-     * In case the PolicyDetails was found with the provided `where` argument, update it with this data.
-     * 
-    **/
-    update: XOR<PolicyDetailsUpdateInput, PolicyDetailsUncheckedUpdateInput>
-  }
-
-
-  /**
-   * PolicyDetails delete
-   */
-  export type PolicyDetailsDeleteArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyDetails
-     * 
-    **/
-    select?: PolicyDetailsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyDetailsInclude | null
-    /**
-     * Filter which PolicyDetails to delete.
-     * 
-    **/
-    where: PolicyDetailsWhereUniqueInput
-  }
-
-
-  /**
-   * PolicyDetails deleteMany
-   */
-  export type PolicyDetailsDeleteManyArgs = {
-    where?: PolicyDetailsWhereInput
-  }
-
-
-  /**
-   * PolicyDetails without action
-   */
-  export type PolicyDetailsArgs = {
-    /**
-     * Select specific fields to fetch from the PolicyDetails
-     * 
-    **/
-    select?: PolicyDetailsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: PolicyDetailsInclude | null
   }
 
 
@@ -3582,38 +1591,11 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     version: 'version',
-    quoteId: 'quoteId',
-    startDate: 'startDate',
-    policyNumber: 'policyNumber',
-    status: 'status',
-    isDeleted: 'isDeleted'
+    name: 'name',
+    quoteId: 'quoteId'
   };
 
   export type PolicyScalarFieldEnum = (typeof PolicyScalarFieldEnum)[keyof typeof PolicyScalarFieldEnum]
-
-
-  export const PolicyTransactionScalarFieldEnum: {
-    id: 'id',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    version: 'version',
-    policyId: 'policyId',
-    name: 'name'
-  };
-
-  export type PolicyTransactionScalarFieldEnum = (typeof PolicyTransactionScalarFieldEnum)[keyof typeof PolicyTransactionScalarFieldEnum]
-
-
-  export const PolicyDetailsScalarFieldEnum: {
-    id: 'id',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    version: 'version',
-    policyId: 'policyId',
-    name: 'name'
-  };
-
-  export type PolicyDetailsScalarFieldEnum = (typeof PolicyDetailsScalarFieldEnum)[keyof typeof PolicyDetailsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3641,17 +1623,12 @@ export namespace Prisma {
     AND?: Enumerable<PolicyWhereInput>
     OR?: Enumerable<PolicyWhereInput>
     NOT?: Enumerable<PolicyWhereInput>
-    id?: StringFilter | string
+    id?: IntFilter | number
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
     version?: IntFilter | number
-    quoteId?: StringFilter | string
-    startDate?: DateTimeFilter | Date | string
-    policyNumber?: StringFilter | string
-    status?: EnumPolicyStatusFilter | PolicyStatus
-    isDeleted?: BoolFilter | boolean
-    transactions?: PolicyTransactionListRelationFilter
-    details?: PolicyDetailsListRelationFilter
+    name?: StringFilter | string
+    quoteId?: IntFilter | number
   }
 
   export type PolicyOrderByWithRelationInput = {
@@ -3659,17 +1636,12 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     version?: SortOrder
+    name?: SortOrder
     quoteId?: SortOrder
-    startDate?: SortOrder
-    policyNumber?: SortOrder
-    status?: SortOrder
-    isDeleted?: SortOrder
-    transactions?: PolicyTransactionOrderByRelationAggregateInput
-    details?: PolicyDetailsOrderByRelationAggregateInput
   }
 
   export type PolicyWhereUniqueInput = {
-    id?: string
+    id?: number
   }
 
   export type PolicyOrderByWithAggregationInput = {
@@ -3677,11 +1649,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     version?: SortOrder
+    name?: SortOrder
     quoteId?: SortOrder
-    startDate?: SortOrder
-    policyNumber?: SortOrder
-    status?: SortOrder
-    isDeleted?: SortOrder
     _count?: PolicyCountOrderByAggregateInput
     _avg?: PolicyAvgOrderByAggregateInput
     _max?: PolicyMaxOrderByAggregateInput
@@ -3693,334 +1662,94 @@ export namespace Prisma {
     AND?: Enumerable<PolicyScalarWhereWithAggregatesInput>
     OR?: Enumerable<PolicyScalarWhereWithAggregatesInput>
     NOT?: Enumerable<PolicyScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    createdAt?: DateTimeWithAggregatesFilter | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter | Date | string
-    version?: IntWithAggregatesFilter | number
-    quoteId?: StringWithAggregatesFilter | string
-    startDate?: DateTimeWithAggregatesFilter | Date | string
-    policyNumber?: StringWithAggregatesFilter | string
-    status?: EnumPolicyStatusWithAggregatesFilter | PolicyStatus
-    isDeleted?: BoolWithAggregatesFilter | boolean
-  }
-
-  export type PolicyTransactionWhereInput = {
-    AND?: Enumerable<PolicyTransactionWhereInput>
-    OR?: Enumerable<PolicyTransactionWhereInput>
-    NOT?: Enumerable<PolicyTransactionWhereInput>
-    id?: StringFilter | string
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-    version?: IntFilter | number
-    policy?: XOR<PolicyRelationFilter, PolicyWhereInput>
-    policyId?: StringFilter | string
-    name?: StringFilter | string
-  }
-
-  export type PolicyTransactionOrderByWithRelationInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    version?: SortOrder
-    policy?: PolicyOrderByWithRelationInput
-    policyId?: SortOrder
-    name?: SortOrder
-  }
-
-  export type PolicyTransactionWhereUniqueInput = {
-    id?: string
-  }
-
-  export type PolicyTransactionOrderByWithAggregationInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    version?: SortOrder
-    policyId?: SortOrder
-    name?: SortOrder
-    _count?: PolicyTransactionCountOrderByAggregateInput
-    _avg?: PolicyTransactionAvgOrderByAggregateInput
-    _max?: PolicyTransactionMaxOrderByAggregateInput
-    _min?: PolicyTransactionMinOrderByAggregateInput
-    _sum?: PolicyTransactionSumOrderByAggregateInput
-  }
-
-  export type PolicyTransactionScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<PolicyTransactionScalarWhereWithAggregatesInput>
-    OR?: Enumerable<PolicyTransactionScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<PolicyTransactionScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    createdAt?: DateTimeWithAggregatesFilter | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter | Date | string
-    version?: IntWithAggregatesFilter | number
-    policyId?: StringWithAggregatesFilter | string
-    name?: StringWithAggregatesFilter | string
-  }
-
-  export type PolicyDetailsWhereInput = {
-    AND?: Enumerable<PolicyDetailsWhereInput>
-    OR?: Enumerable<PolicyDetailsWhereInput>
-    NOT?: Enumerable<PolicyDetailsWhereInput>
-    id?: IntFilter | number
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-    version?: IntFilter | number
-    policy?: XOR<PolicyRelationFilter, PolicyWhereInput>
-    policyId?: StringFilter | string
-    name?: StringFilter | string
-  }
-
-  export type PolicyDetailsOrderByWithRelationInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    version?: SortOrder
-    policy?: PolicyOrderByWithRelationInput
-    policyId?: SortOrder
-    name?: SortOrder
-  }
-
-  export type PolicyDetailsWhereUniqueInput = {
-    id?: number
-  }
-
-  export type PolicyDetailsOrderByWithAggregationInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    version?: SortOrder
-    policyId?: SortOrder
-    name?: SortOrder
-    _count?: PolicyDetailsCountOrderByAggregateInput
-    _avg?: PolicyDetailsAvgOrderByAggregateInput
-    _max?: PolicyDetailsMaxOrderByAggregateInput
-    _min?: PolicyDetailsMinOrderByAggregateInput
-    _sum?: PolicyDetailsSumOrderByAggregateInput
-  }
-
-  export type PolicyDetailsScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<PolicyDetailsScalarWhereWithAggregatesInput>
-    OR?: Enumerable<PolicyDetailsScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<PolicyDetailsScalarWhereWithAggregatesInput>
     id?: IntWithAggregatesFilter | number
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
     version?: IntWithAggregatesFilter | number
-    policyId?: StringWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
+    quoteId?: IntWithAggregatesFilter | number
   }
 
   export type PolicyCreateInput = {
-    id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     version?: number
-    quoteId: string
-    startDate?: Date | string
-    policyNumber: string
-    status: PolicyStatus
-    isDeleted: boolean
-    transactions?: PolicyTransactionCreateNestedManyWithoutPolicyInput
-    details?: PolicyDetailsCreateNestedManyWithoutPolicyInput
+    name: string
+    quoteId: number
   }
 
   export type PolicyUncheckedCreateInput = {
-    id?: string
+    id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     version?: number
-    quoteId: string
-    startDate?: Date | string
-    policyNumber: string
-    status: PolicyStatus
-    isDeleted: boolean
-    transactions?: PolicyTransactionUncheckedCreateNestedManyWithoutPolicyInput
-    details?: PolicyDetailsUncheckedCreateNestedManyWithoutPolicyInput
+    name: string
+    quoteId: number
   }
 
   export type PolicyUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     version?: IntFieldUpdateOperationsInput | number
-    quoteId?: StringFieldUpdateOperationsInput | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    policyNumber?: StringFieldUpdateOperationsInput | string
-    status?: EnumPolicyStatusFieldUpdateOperationsInput | PolicyStatus
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    transactions?: PolicyTransactionUpdateManyWithoutPolicyInput
-    details?: PolicyDetailsUpdateManyWithoutPolicyInput
+    name?: StringFieldUpdateOperationsInput | string
+    quoteId?: IntFieldUpdateOperationsInput | number
   }
 
   export type PolicyUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     version?: IntFieldUpdateOperationsInput | number
-    quoteId?: StringFieldUpdateOperationsInput | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    policyNumber?: StringFieldUpdateOperationsInput | string
-    status?: EnumPolicyStatusFieldUpdateOperationsInput | PolicyStatus
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    transactions?: PolicyTransactionUncheckedUpdateManyWithoutPolicyInput
-    details?: PolicyDetailsUncheckedUpdateManyWithoutPolicyInput
+    name?: StringFieldUpdateOperationsInput | string
+    quoteId?: IntFieldUpdateOperationsInput | number
   }
 
   export type PolicyCreateManyInput = {
-    id?: string
+    id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     version?: number
-    quoteId: string
-    startDate?: Date | string
-    policyNumber: string
-    status: PolicyStatus
-    isDeleted: boolean
+    name: string
+    quoteId: number
   }
 
   export type PolicyUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     version?: IntFieldUpdateOperationsInput | number
-    quoteId?: StringFieldUpdateOperationsInput | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    policyNumber?: StringFieldUpdateOperationsInput | string
-    status?: EnumPolicyStatusFieldUpdateOperationsInput | PolicyStatus
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    name?: StringFieldUpdateOperationsInput | string
+    quoteId?: IntFieldUpdateOperationsInput | number
   }
 
   export type PolicyUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    quoteId?: StringFieldUpdateOperationsInput | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    policyNumber?: StringFieldUpdateOperationsInput | string
-    status?: EnumPolicyStatusFieldUpdateOperationsInput | PolicyStatus
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type PolicyTransactionCreateInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    name: string
-    policy: PolicyCreateNestedOneWithoutTransactionsInput
-  }
-
-  export type PolicyTransactionUncheckedCreateInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    policyId: string
-    name: string
-  }
-
-  export type PolicyTransactionUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    policy?: PolicyUpdateOneRequiredWithoutTransactionsInput
-  }
-
-  export type PolicyTransactionUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    policyId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type PolicyTransactionCreateManyInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    policyId: string
-    name: string
-  }
-
-  export type PolicyTransactionUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type PolicyTransactionUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    policyId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type PolicyDetailsCreateInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    name: string
-    policy: PolicyCreateNestedOneWithoutDetailsInput
-  }
-
-  export type PolicyDetailsUncheckedCreateInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    policyId: string
-    name: string
-  }
-
-  export type PolicyDetailsUpdateInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    policy?: PolicyUpdateOneRequiredWithoutDetailsInput
-  }
-
-  export type PolicyDetailsUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     version?: IntFieldUpdateOperationsInput | number
-    policyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    quoteId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type PolicyDetailsCreateManyInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    policyId: string
-    name: string
+  export type IntFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntFilter | number
   }
 
-  export type PolicyDetailsUpdateManyMutationInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type PolicyDetailsUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    policyId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+  export type DateTimeFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeFilter | Date | string
   }
 
   export type StringFilter = {
@@ -4038,74 +1767,19 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
-  export type DateTimeFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeFilter | Date | string
-  }
-
-  export type IntFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntFilter | number
-  }
-
-  export type EnumPolicyStatusFilter = {
-    equals?: PolicyStatus
-    in?: Enumerable<PolicyStatus>
-    notIn?: Enumerable<PolicyStatus>
-    not?: NestedEnumPolicyStatusFilter | PolicyStatus
-  }
-
-  export type BoolFilter = {
-    equals?: boolean
-    not?: NestedBoolFilter | boolean
-  }
-
-  export type PolicyTransactionListRelationFilter = {
-    every?: PolicyTransactionWhereInput
-    some?: PolicyTransactionWhereInput
-    none?: PolicyTransactionWhereInput
-  }
-
-  export type PolicyDetailsListRelationFilter = {
-    every?: PolicyDetailsWhereInput
-    some?: PolicyDetailsWhereInput
-    none?: PolicyDetailsWhereInput
-  }
-
-  export type PolicyTransactionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type PolicyDetailsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type PolicyCountOrderByAggregateInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     version?: SortOrder
+    name?: SortOrder
     quoteId?: SortOrder
-    startDate?: SortOrder
-    policyNumber?: SortOrder
-    status?: SortOrder
-    isDeleted?: SortOrder
   }
 
   export type PolicyAvgOrderByAggregateInput = {
+    id?: SortOrder
     version?: SortOrder
+    quoteId?: SortOrder
   }
 
   export type PolicyMaxOrderByAggregateInput = {
@@ -4113,11 +1787,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     version?: SortOrder
+    name?: SortOrder
     quoteId?: SortOrder
-    startDate?: SortOrder
-    policyNumber?: SortOrder
-    status?: SortOrder
-    isDeleted?: SortOrder
   }
 
   export type PolicyMinOrderByAggregateInput = {
@@ -4125,15 +1796,44 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     version?: SortOrder
+    name?: SortOrder
     quoteId?: SortOrder
-    startDate?: SortOrder
-    policyNumber?: SortOrder
-    status?: SortOrder
-    isDeleted?: SortOrder
   }
 
   export type PolicySumOrderByAggregateInput = {
+    id?: SortOrder
     version?: SortOrder
+    quoteId?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntWithAggregatesFilter | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedIntFilter
+    _min?: NestedIntFilter
+    _max?: NestedIntFilter
+  }
+
+  export type DateTimeWithAggregatesFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeWithAggregatesFilter | Date | string
+    _count?: NestedIntFilter
+    _min?: NestedDateTimeFilter
+    _max?: NestedDateTimeFilter
   }
 
   export type StringWithAggregatesFilter = {
@@ -4154,163 +1854,6 @@ export namespace Prisma {
     _max?: NestedStringFilter
   }
 
-  export type DateTimeWithAggregatesFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeWithAggregatesFilter | Date | string
-    _count?: NestedIntFilter
-    _min?: NestedDateTimeFilter
-    _max?: NestedDateTimeFilter
-  }
-
-  export type IntWithAggregatesFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntWithAggregatesFilter | number
-    _count?: NestedIntFilter
-    _avg?: NestedFloatFilter
-    _sum?: NestedIntFilter
-    _min?: NestedIntFilter
-    _max?: NestedIntFilter
-  }
-
-  export type EnumPolicyStatusWithAggregatesFilter = {
-    equals?: PolicyStatus
-    in?: Enumerable<PolicyStatus>
-    notIn?: Enumerable<PolicyStatus>
-    not?: NestedEnumPolicyStatusWithAggregatesFilter | PolicyStatus
-    _count?: NestedIntFilter
-    _min?: NestedEnumPolicyStatusFilter
-    _max?: NestedEnumPolicyStatusFilter
-  }
-
-  export type BoolWithAggregatesFilter = {
-    equals?: boolean
-    not?: NestedBoolWithAggregatesFilter | boolean
-    _count?: NestedIntFilter
-    _min?: NestedBoolFilter
-    _max?: NestedBoolFilter
-  }
-
-  export type PolicyRelationFilter = {
-    is?: PolicyWhereInput
-    isNot?: PolicyWhereInput
-  }
-
-  export type PolicyTransactionCountOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    version?: SortOrder
-    policyId?: SortOrder
-    name?: SortOrder
-  }
-
-  export type PolicyTransactionAvgOrderByAggregateInput = {
-    version?: SortOrder
-  }
-
-  export type PolicyTransactionMaxOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    version?: SortOrder
-    policyId?: SortOrder
-    name?: SortOrder
-  }
-
-  export type PolicyTransactionMinOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    version?: SortOrder
-    policyId?: SortOrder
-    name?: SortOrder
-  }
-
-  export type PolicyTransactionSumOrderByAggregateInput = {
-    version?: SortOrder
-  }
-
-  export type PolicyDetailsCountOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    version?: SortOrder
-    policyId?: SortOrder
-    name?: SortOrder
-  }
-
-  export type PolicyDetailsAvgOrderByAggregateInput = {
-    id?: SortOrder
-    version?: SortOrder
-  }
-
-  export type PolicyDetailsMaxOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    version?: SortOrder
-    policyId?: SortOrder
-    name?: SortOrder
-  }
-
-  export type PolicyDetailsMinOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    version?: SortOrder
-    policyId?: SortOrder
-    name?: SortOrder
-  }
-
-  export type PolicyDetailsSumOrderByAggregateInput = {
-    id?: SortOrder
-    version?: SortOrder
-  }
-
-  export type PolicyTransactionCreateNestedManyWithoutPolicyInput = {
-    create?: XOR<Enumerable<PolicyTransactionCreateWithoutPolicyInput>, Enumerable<PolicyTransactionUncheckedCreateWithoutPolicyInput>>
-    connectOrCreate?: Enumerable<PolicyTransactionCreateOrConnectWithoutPolicyInput>
-    createMany?: PolicyTransactionCreateManyPolicyInputEnvelope
-    connect?: Enumerable<PolicyTransactionWhereUniqueInput>
-  }
-
-  export type PolicyDetailsCreateNestedManyWithoutPolicyInput = {
-    create?: XOR<Enumerable<PolicyDetailsCreateWithoutPolicyInput>, Enumerable<PolicyDetailsUncheckedCreateWithoutPolicyInput>>
-    connectOrCreate?: Enumerable<PolicyDetailsCreateOrConnectWithoutPolicyInput>
-    createMany?: PolicyDetailsCreateManyPolicyInputEnvelope
-    connect?: Enumerable<PolicyDetailsWhereUniqueInput>
-  }
-
-  export type PolicyTransactionUncheckedCreateNestedManyWithoutPolicyInput = {
-    create?: XOR<Enumerable<PolicyTransactionCreateWithoutPolicyInput>, Enumerable<PolicyTransactionUncheckedCreateWithoutPolicyInput>>
-    connectOrCreate?: Enumerable<PolicyTransactionCreateOrConnectWithoutPolicyInput>
-    createMany?: PolicyTransactionCreateManyPolicyInputEnvelope
-    connect?: Enumerable<PolicyTransactionWhereUniqueInput>
-  }
-
-  export type PolicyDetailsUncheckedCreateNestedManyWithoutPolicyInput = {
-    create?: XOR<Enumerable<PolicyDetailsCreateWithoutPolicyInput>, Enumerable<PolicyDetailsUncheckedCreateWithoutPolicyInput>>
-    connectOrCreate?: Enumerable<PolicyDetailsCreateOrConnectWithoutPolicyInput>
-    createMany?: PolicyDetailsCreateManyPolicyInputEnvelope
-    connect?: Enumerable<PolicyDetailsWhereUniqueInput>
-  }
-
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -4323,96 +1866,30 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type EnumPolicyStatusFieldUpdateOperationsInput = {
-    set?: PolicyStatus
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
+  export type NestedIntFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntFilter | number
   }
 
-  export type PolicyTransactionUpdateManyWithoutPolicyInput = {
-    create?: XOR<Enumerable<PolicyTransactionCreateWithoutPolicyInput>, Enumerable<PolicyTransactionUncheckedCreateWithoutPolicyInput>>
-    connectOrCreate?: Enumerable<PolicyTransactionCreateOrConnectWithoutPolicyInput>
-    upsert?: Enumerable<PolicyTransactionUpsertWithWhereUniqueWithoutPolicyInput>
-    createMany?: PolicyTransactionCreateManyPolicyInputEnvelope
-    connect?: Enumerable<PolicyTransactionWhereUniqueInput>
-    set?: Enumerable<PolicyTransactionWhereUniqueInput>
-    disconnect?: Enumerable<PolicyTransactionWhereUniqueInput>
-    delete?: Enumerable<PolicyTransactionWhereUniqueInput>
-    update?: Enumerable<PolicyTransactionUpdateWithWhereUniqueWithoutPolicyInput>
-    updateMany?: Enumerable<PolicyTransactionUpdateManyWithWhereWithoutPolicyInput>
-    deleteMany?: Enumerable<PolicyTransactionScalarWhereInput>
-  }
-
-  export type PolicyDetailsUpdateManyWithoutPolicyInput = {
-    create?: XOR<Enumerable<PolicyDetailsCreateWithoutPolicyInput>, Enumerable<PolicyDetailsUncheckedCreateWithoutPolicyInput>>
-    connectOrCreate?: Enumerable<PolicyDetailsCreateOrConnectWithoutPolicyInput>
-    upsert?: Enumerable<PolicyDetailsUpsertWithWhereUniqueWithoutPolicyInput>
-    createMany?: PolicyDetailsCreateManyPolicyInputEnvelope
-    connect?: Enumerable<PolicyDetailsWhereUniqueInput>
-    set?: Enumerable<PolicyDetailsWhereUniqueInput>
-    disconnect?: Enumerable<PolicyDetailsWhereUniqueInput>
-    delete?: Enumerable<PolicyDetailsWhereUniqueInput>
-    update?: Enumerable<PolicyDetailsUpdateWithWhereUniqueWithoutPolicyInput>
-    updateMany?: Enumerable<PolicyDetailsUpdateManyWithWhereWithoutPolicyInput>
-    deleteMany?: Enumerable<PolicyDetailsScalarWhereInput>
-  }
-
-  export type PolicyTransactionUncheckedUpdateManyWithoutPolicyInput = {
-    create?: XOR<Enumerable<PolicyTransactionCreateWithoutPolicyInput>, Enumerable<PolicyTransactionUncheckedCreateWithoutPolicyInput>>
-    connectOrCreate?: Enumerable<PolicyTransactionCreateOrConnectWithoutPolicyInput>
-    upsert?: Enumerable<PolicyTransactionUpsertWithWhereUniqueWithoutPolicyInput>
-    createMany?: PolicyTransactionCreateManyPolicyInputEnvelope
-    connect?: Enumerable<PolicyTransactionWhereUniqueInput>
-    set?: Enumerable<PolicyTransactionWhereUniqueInput>
-    disconnect?: Enumerable<PolicyTransactionWhereUniqueInput>
-    delete?: Enumerable<PolicyTransactionWhereUniqueInput>
-    update?: Enumerable<PolicyTransactionUpdateWithWhereUniqueWithoutPolicyInput>
-    updateMany?: Enumerable<PolicyTransactionUpdateManyWithWhereWithoutPolicyInput>
-    deleteMany?: Enumerable<PolicyTransactionScalarWhereInput>
-  }
-
-  export type PolicyDetailsUncheckedUpdateManyWithoutPolicyInput = {
-    create?: XOR<Enumerable<PolicyDetailsCreateWithoutPolicyInput>, Enumerable<PolicyDetailsUncheckedCreateWithoutPolicyInput>>
-    connectOrCreate?: Enumerable<PolicyDetailsCreateOrConnectWithoutPolicyInput>
-    upsert?: Enumerable<PolicyDetailsUpsertWithWhereUniqueWithoutPolicyInput>
-    createMany?: PolicyDetailsCreateManyPolicyInputEnvelope
-    connect?: Enumerable<PolicyDetailsWhereUniqueInput>
-    set?: Enumerable<PolicyDetailsWhereUniqueInput>
-    disconnect?: Enumerable<PolicyDetailsWhereUniqueInput>
-    delete?: Enumerable<PolicyDetailsWhereUniqueInput>
-    update?: Enumerable<PolicyDetailsUpdateWithWhereUniqueWithoutPolicyInput>
-    updateMany?: Enumerable<PolicyDetailsUpdateManyWithWhereWithoutPolicyInput>
-    deleteMany?: Enumerable<PolicyDetailsScalarWhereInput>
-  }
-
-  export type PolicyCreateNestedOneWithoutTransactionsInput = {
-    create?: XOR<PolicyCreateWithoutTransactionsInput, PolicyUncheckedCreateWithoutTransactionsInput>
-    connectOrCreate?: PolicyCreateOrConnectWithoutTransactionsInput
-    connect?: PolicyWhereUniqueInput
-  }
-
-  export type PolicyUpdateOneRequiredWithoutTransactionsInput = {
-    create?: XOR<PolicyCreateWithoutTransactionsInput, PolicyUncheckedCreateWithoutTransactionsInput>
-    connectOrCreate?: PolicyCreateOrConnectWithoutTransactionsInput
-    upsert?: PolicyUpsertWithoutTransactionsInput
-    connect?: PolicyWhereUniqueInput
-    update?: XOR<PolicyUpdateWithoutTransactionsInput, PolicyUncheckedUpdateWithoutTransactionsInput>
-  }
-
-  export type PolicyCreateNestedOneWithoutDetailsInput = {
-    create?: XOR<PolicyCreateWithoutDetailsInput, PolicyUncheckedCreateWithoutDetailsInput>
-    connectOrCreate?: PolicyCreateOrConnectWithoutDetailsInput
-    connect?: PolicyWhereUniqueInput
-  }
-
-  export type PolicyUpdateOneRequiredWithoutDetailsInput = {
-    create?: XOR<PolicyCreateWithoutDetailsInput, PolicyUncheckedCreateWithoutDetailsInput>
-    connectOrCreate?: PolicyCreateOrConnectWithoutDetailsInput
-    upsert?: PolicyUpsertWithoutDetailsInput
-    connect?: PolicyWhereUniqueInput
-    update?: XOR<PolicyUpdateWithoutDetailsInput, PolicyUncheckedUpdateWithoutDetailsInput>
+  export type NestedDateTimeFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeFilter | Date | string
   }
 
   export type NestedStringFilter = {
@@ -4427,71 +1904,6 @@ export namespace Prisma {
     startsWith?: string
     endsWith?: string
     not?: NestedStringFilter | string
-  }
-
-  export type NestedDateTimeFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeFilter | Date | string
-  }
-
-  export type NestedIntFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntFilter | number
-  }
-
-  export type NestedEnumPolicyStatusFilter = {
-    equals?: PolicyStatus
-    in?: Enumerable<PolicyStatus>
-    notIn?: Enumerable<PolicyStatus>
-    not?: NestedEnumPolicyStatusFilter | PolicyStatus
-  }
-
-  export type NestedBoolFilter = {
-    equals?: boolean
-    not?: NestedBoolFilter | boolean
-  }
-
-  export type NestedStringWithAggregatesFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringWithAggregatesFilter | string
-    _count?: NestedIntFilter
-    _min?: NestedStringFilter
-    _max?: NestedStringFilter
-  }
-
-  export type NestedDateTimeWithAggregatesFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeWithAggregatesFilter | Date | string
-    _count?: NestedIntFilter
-    _min?: NestedDateTimeFilter
-    _max?: NestedDateTimeFilter
   }
 
   export type NestedIntWithAggregatesFilter = {
@@ -4521,316 +1933,35 @@ export namespace Prisma {
     not?: NestedFloatFilter | number
   }
 
-  export type NestedEnumPolicyStatusWithAggregatesFilter = {
-    equals?: PolicyStatus
-    in?: Enumerable<PolicyStatus>
-    notIn?: Enumerable<PolicyStatus>
-    not?: NestedEnumPolicyStatusWithAggregatesFilter | PolicyStatus
+  export type NestedDateTimeWithAggregatesFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeWithAggregatesFilter | Date | string
     _count?: NestedIntFilter
-    _min?: NestedEnumPolicyStatusFilter
-    _max?: NestedEnumPolicyStatusFilter
+    _min?: NestedDateTimeFilter
+    _max?: NestedDateTimeFilter
   }
 
-  export type NestedBoolWithAggregatesFilter = {
-    equals?: boolean
-    not?: NestedBoolWithAggregatesFilter | boolean
+  export type NestedStringWithAggregatesFilter = {
+    equals?: string
+    in?: Enumerable<string>
+    notIn?: Enumerable<string>
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringWithAggregatesFilter | string
     _count?: NestedIntFilter
-    _min?: NestedBoolFilter
-    _max?: NestedBoolFilter
-  }
-
-  export type PolicyTransactionCreateWithoutPolicyInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    name: string
-  }
-
-  export type PolicyTransactionUncheckedCreateWithoutPolicyInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    name: string
-  }
-
-  export type PolicyTransactionCreateOrConnectWithoutPolicyInput = {
-    where: PolicyTransactionWhereUniqueInput
-    create: XOR<PolicyTransactionCreateWithoutPolicyInput, PolicyTransactionUncheckedCreateWithoutPolicyInput>
-  }
-
-  export type PolicyTransactionCreateManyPolicyInputEnvelope = {
-    data: Enumerable<PolicyTransactionCreateManyPolicyInput>
-    skipDuplicates?: boolean
-  }
-
-  export type PolicyDetailsCreateWithoutPolicyInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    name: string
-  }
-
-  export type PolicyDetailsUncheckedCreateWithoutPolicyInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    name: string
-  }
-
-  export type PolicyDetailsCreateOrConnectWithoutPolicyInput = {
-    where: PolicyDetailsWhereUniqueInput
-    create: XOR<PolicyDetailsCreateWithoutPolicyInput, PolicyDetailsUncheckedCreateWithoutPolicyInput>
-  }
-
-  export type PolicyDetailsCreateManyPolicyInputEnvelope = {
-    data: Enumerable<PolicyDetailsCreateManyPolicyInput>
-    skipDuplicates?: boolean
-  }
-
-  export type PolicyTransactionUpsertWithWhereUniqueWithoutPolicyInput = {
-    where: PolicyTransactionWhereUniqueInput
-    update: XOR<PolicyTransactionUpdateWithoutPolicyInput, PolicyTransactionUncheckedUpdateWithoutPolicyInput>
-    create: XOR<PolicyTransactionCreateWithoutPolicyInput, PolicyTransactionUncheckedCreateWithoutPolicyInput>
-  }
-
-  export type PolicyTransactionUpdateWithWhereUniqueWithoutPolicyInput = {
-    where: PolicyTransactionWhereUniqueInput
-    data: XOR<PolicyTransactionUpdateWithoutPolicyInput, PolicyTransactionUncheckedUpdateWithoutPolicyInput>
-  }
-
-  export type PolicyTransactionUpdateManyWithWhereWithoutPolicyInput = {
-    where: PolicyTransactionScalarWhereInput
-    data: XOR<PolicyTransactionUpdateManyMutationInput, PolicyTransactionUncheckedUpdateManyWithoutTransactionsInput>
-  }
-
-  export type PolicyTransactionScalarWhereInput = {
-    AND?: Enumerable<PolicyTransactionScalarWhereInput>
-    OR?: Enumerable<PolicyTransactionScalarWhereInput>
-    NOT?: Enumerable<PolicyTransactionScalarWhereInput>
-    id?: StringFilter | string
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-    version?: IntFilter | number
-    policyId?: StringFilter | string
-    name?: StringFilter | string
-  }
-
-  export type PolicyDetailsUpsertWithWhereUniqueWithoutPolicyInput = {
-    where: PolicyDetailsWhereUniqueInput
-    update: XOR<PolicyDetailsUpdateWithoutPolicyInput, PolicyDetailsUncheckedUpdateWithoutPolicyInput>
-    create: XOR<PolicyDetailsCreateWithoutPolicyInput, PolicyDetailsUncheckedCreateWithoutPolicyInput>
-  }
-
-  export type PolicyDetailsUpdateWithWhereUniqueWithoutPolicyInput = {
-    where: PolicyDetailsWhereUniqueInput
-    data: XOR<PolicyDetailsUpdateWithoutPolicyInput, PolicyDetailsUncheckedUpdateWithoutPolicyInput>
-  }
-
-  export type PolicyDetailsUpdateManyWithWhereWithoutPolicyInput = {
-    where: PolicyDetailsScalarWhereInput
-    data: XOR<PolicyDetailsUpdateManyMutationInput, PolicyDetailsUncheckedUpdateManyWithoutDetailsInput>
-  }
-
-  export type PolicyDetailsScalarWhereInput = {
-    AND?: Enumerable<PolicyDetailsScalarWhereInput>
-    OR?: Enumerable<PolicyDetailsScalarWhereInput>
-    NOT?: Enumerable<PolicyDetailsScalarWhereInput>
-    id?: IntFilter | number
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-    version?: IntFilter | number
-    policyId?: StringFilter | string
-    name?: StringFilter | string
-  }
-
-  export type PolicyCreateWithoutTransactionsInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    quoteId: string
-    startDate?: Date | string
-    policyNumber: string
-    status: PolicyStatus
-    isDeleted: boolean
-    details?: PolicyDetailsCreateNestedManyWithoutPolicyInput
-  }
-
-  export type PolicyUncheckedCreateWithoutTransactionsInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    quoteId: string
-    startDate?: Date | string
-    policyNumber: string
-    status: PolicyStatus
-    isDeleted: boolean
-    details?: PolicyDetailsUncheckedCreateNestedManyWithoutPolicyInput
-  }
-
-  export type PolicyCreateOrConnectWithoutTransactionsInput = {
-    where: PolicyWhereUniqueInput
-    create: XOR<PolicyCreateWithoutTransactionsInput, PolicyUncheckedCreateWithoutTransactionsInput>
-  }
-
-  export type PolicyUpsertWithoutTransactionsInput = {
-    update: XOR<PolicyUpdateWithoutTransactionsInput, PolicyUncheckedUpdateWithoutTransactionsInput>
-    create: XOR<PolicyCreateWithoutTransactionsInput, PolicyUncheckedCreateWithoutTransactionsInput>
-  }
-
-  export type PolicyUpdateWithoutTransactionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    quoteId?: StringFieldUpdateOperationsInput | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    policyNumber?: StringFieldUpdateOperationsInput | string
-    status?: EnumPolicyStatusFieldUpdateOperationsInput | PolicyStatus
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    details?: PolicyDetailsUpdateManyWithoutPolicyInput
-  }
-
-  export type PolicyUncheckedUpdateWithoutTransactionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    quoteId?: StringFieldUpdateOperationsInput | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    policyNumber?: StringFieldUpdateOperationsInput | string
-    status?: EnumPolicyStatusFieldUpdateOperationsInput | PolicyStatus
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    details?: PolicyDetailsUncheckedUpdateManyWithoutPolicyInput
-  }
-
-  export type PolicyCreateWithoutDetailsInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    quoteId: string
-    startDate?: Date | string
-    policyNumber: string
-    status: PolicyStatus
-    isDeleted: boolean
-    transactions?: PolicyTransactionCreateNestedManyWithoutPolicyInput
-  }
-
-  export type PolicyUncheckedCreateWithoutDetailsInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    quoteId: string
-    startDate?: Date | string
-    policyNumber: string
-    status: PolicyStatus
-    isDeleted: boolean
-    transactions?: PolicyTransactionUncheckedCreateNestedManyWithoutPolicyInput
-  }
-
-  export type PolicyCreateOrConnectWithoutDetailsInput = {
-    where: PolicyWhereUniqueInput
-    create: XOR<PolicyCreateWithoutDetailsInput, PolicyUncheckedCreateWithoutDetailsInput>
-  }
-
-  export type PolicyUpsertWithoutDetailsInput = {
-    update: XOR<PolicyUpdateWithoutDetailsInput, PolicyUncheckedUpdateWithoutDetailsInput>
-    create: XOR<PolicyCreateWithoutDetailsInput, PolicyUncheckedCreateWithoutDetailsInput>
-  }
-
-  export type PolicyUpdateWithoutDetailsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    quoteId?: StringFieldUpdateOperationsInput | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    policyNumber?: StringFieldUpdateOperationsInput | string
-    status?: EnumPolicyStatusFieldUpdateOperationsInput | PolicyStatus
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    transactions?: PolicyTransactionUpdateManyWithoutPolicyInput
-  }
-
-  export type PolicyUncheckedUpdateWithoutDetailsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    quoteId?: StringFieldUpdateOperationsInput | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    policyNumber?: StringFieldUpdateOperationsInput | string
-    status?: EnumPolicyStatusFieldUpdateOperationsInput | PolicyStatus
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    transactions?: PolicyTransactionUncheckedUpdateManyWithoutPolicyInput
-  }
-
-  export type PolicyTransactionCreateManyPolicyInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    name: string
-  }
-
-  export type PolicyDetailsCreateManyPolicyInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    version?: number
-    name: string
-  }
-
-  export type PolicyTransactionUpdateWithoutPolicyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type PolicyTransactionUncheckedUpdateWithoutPolicyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type PolicyTransactionUncheckedUpdateManyWithoutTransactionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type PolicyDetailsUpdateWithoutPolicyInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type PolicyDetailsUncheckedUpdateWithoutPolicyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type PolicyDetailsUncheckedUpdateManyWithoutDetailsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    version?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
+    _min?: NestedStringFilter
+    _max?: NestedStringFilter
   }
 
 

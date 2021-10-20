@@ -9,80 +9,23 @@ generator client {
   previewFeatures = ["interactiveTransactions"]
 }
 
-enum QuoteStatus {
-  PENDING
-  ACTIVE
-  INVALID
-  ACCEPTED
-  REJECTED
-}
-
-enum QuoteType {
-  CONTENTSFLEX
-}
-
 model Quote {
-  id         String      @id @default(cuid())
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @default(now())
-  version    Int         @default(value: 1)
-  type       QuoteType
-  validFrom  DateTime    @default(now())
-  validUntil DateTime
-  status     QuoteStatus
-  productId  Int
-  answers    Answer[]
-  isDeleted  Boolean
-  isValid    Boolean
-  asset      Asset[]
-}
-
-model Answer {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  version   Int      @default(value: 1)
-  title     String
-  value     Int
-  answer    String
-  slug      String
-  quote     Quote?   @relation(fields: [quoteId], references: [id])
-  quoteId   String
-}
-
-model Rule {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   version   Int      @default(value: 1)
-  title     String
-  slug      String
-  value     Int
-  ruleSet   RuleSet  @relation(fields: [ruleSetId], references: [id])
-  ruleSetId Int
-}
-
-model RuleSet {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  version   Int      @default(value: 1)
-  product   Int      @default(value: 1)
-  title     String
-  slug      String
-  rules     Rule[]
-
-  @@unique([slug, product])
+  name      String
+  asset     Asset[]
 }
 
 model Asset {
-  id          String       @id @default(cuid())
+  id          Int          @id @default(autoincrement())
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   version     Int          @default(value: 1)
   userId      String
   quote       Quote        @relation(fields: [quoteId], references: [id])
-  quoteId     String
+  quoteId     Int
   description String
   amount      Float
   assetType   AssetType    @relation(fields: [assetTypeId], references: [id])
@@ -105,7 +48,7 @@ enum AssetMediaType {
 }
 
 model AssetMedia {
-  id          String         @id @default(cuid())
+  id          Int            @id @default(autoincrement())
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   version     Int            @default(value: 1)
@@ -115,5 +58,5 @@ model AssetMedia {
   filename    String
   key         String
   asset       Asset?         @relation(fields: [assetId], references: [id])
-  assetId     String?
+  assetId     Int?
 }
