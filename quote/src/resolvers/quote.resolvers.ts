@@ -2,12 +2,7 @@ import { Context } from '../context'
 import { QuoteModel } from '../models/quote.model'
 
 export const quoteResolvers = {
-  Quote: {
-    __resolveReference: async (ref, context: Context) => {
-      console.log("resolving Refeerence: ", ref.id, context);
-      return await QuoteModel.findQuoteById(ref.id, context)
-    },
-  },
+
   Policy: {
      quote: async (quote, abc, context) => {
       console.log("Getting associated Quote Info: ", quote.quoteId)
