@@ -1,0 +1,6 @@
+# generated files
+src/*.js
+dist
+
+# dependencies
+node_modules

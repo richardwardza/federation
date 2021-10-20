@@ -1,0 +1,57 @@
+{
+  "name": "gateway",
+  "version": "1.0.0",
+  "description": "fps gateway",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "start:watch": "ts-node ./src/index.ts -e ts,graphql",
+    "install:container:deps": "docker exec backend_gateway yarn",
+    "sync:prisma:generate": "docker exec backend_gateway npx prisma generate",
+    "lint": "eslint . --ext .ts",
+    "test": "jest"
+  },
+  "author": "Noel Kriegler",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/federation": "^0.23.0",
+    "@apollo/gateway": "^0.26.1",
+    "apollo-server": "^2.22.2",
+    "apollo-server-express": "^3.3.0",
+    "express": "^4.17.1",
+    "express-jwt": "^6.1.0",
+    "graphql": "^15.6.0",
+    "graphql-middleware": "^6.1.6",
+    "graphql-shield": "^7.5.0",
+    "wait-on": "^6.0.0"
+  },
+  "devDependencies": {
+    "@apollo/rover": "^0.1.10",
+    "@types/jest": "^26.0.24",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jest": "^24.5.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "jest": "^27.2.3",
+    "nodemon": "^2.0.13",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.4.3"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts,json",
+    "ignore": [
+      "src/**/*.spec.ts",
+      "node_modules/**"
+    ],
+    "exec": "ts-node ./src/index.ts"
+  }
+}

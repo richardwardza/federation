@@ -1,0 +1,26 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  quote-db:
+    image: postgres:10.3
+    restart: always
+    ports:
+      - '5533:5432'
+    environment:
+      POSTGRES_DB: quote
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+    volumes:
+      - postgres:/var/lib/postgresql/quote/data
+  policy-db:
+    image: postgres:10.3
+    restart: always
+    ports:
+      - '5534:5432'
+    environment:
+      POSTGRES_DB: policy
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+    volumes:
+      - postgres:/var/lib/postgresql/policy/data
+volumes:
+  postgres: ~

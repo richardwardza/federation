@@ -1,0 +1,119 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "linux-musl"]
+  previewFeatures = ["interactiveTransactions"]
+}
+
+enum QuoteStatus {
+  PENDING
+  ACTIVE
+  INVALID
+  ACCEPTED
+  REJECTED
+}
+
+enum QuoteType {
+  CONTENTSFLEX
+}
+
+model Quote {
+  id         String      @id @default(cuid())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now())
+  version    Int         @default(value: 1)
+  type       QuoteType
+  validFrom  DateTime    @default(now())
+  validUntil DateTime
+  status     QuoteStatus
+  productId  Int
+  answers    Answer[]
+  isDeleted  Boolean
+  isValid    Boolean
+  asset      Asset[]
+}
+
+model Answer {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  version   Int      @default(value: 1)
+  title     String
+  value     Int
+  answer    String
+  slug      String
+  quote     Quote?   @relation(fields: [quoteId], references: [id])
+  quoteId   String
+}
+
+model Rule {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  version   Int      @default(value: 1)
+  title     String
+  slug      String
+  value     Int
+  ruleSet   RuleSet  @relation(fields: [ruleSetId], references: [id])
+  ruleSetId Int
+}
+
+model RuleSet {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  version   Int      @default(value: 1)
+  product   Int      @default(value: 1)
+  title     String
+  slug      String
+  rules     Rule[]
+
+  @@unique([slug, product])
+}
+
+model Asset {
+  id          String       @id @default(cuid())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  version     Int          @default(value: 1)
+  userId      String
+  quote       Quote        @relation(fields: [quoteId], references: [id])
+  quoteId     String
+  description String
+  amount      Float
+  assetType   AssetType    @relation(fields: [assetTypeId], references: [id])
+  assetTypeId Int
+  assetMedia  AssetMedia[]
+}
+
+model AssetType {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  version     Int      @default(value: 1)
+  title       String
+  description String
+  asset       Asset[]
+}
+
+enum AssetMediaType {
+  IMAGE
+}
+
+model AssetMedia {
+  id          String         @id @default(cuid())
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  version     Int            @default(value: 1)
+  type        AssetMediaType @default(value: IMAGE)
+  location    String
+  contentType String         @default(value: "application/octet-stream")
+  filename    String
+  key         String
+  asset       Asset?         @relation(fields: [assetId], references: [id])
+  assetId     String?
+}
